@@ -1,0 +1,2204 @@
+type Attribute {
+  name: String!
+  type: String!
+  isCalculated: Boolean!
+  isAutoSequence: Boolean!
+  isPrimaryKey: Boolean!
+  isUnique: Boolean!
+}
+
+type BoundaryEvent {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type BoundaryEventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [BoundaryEventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type BoundaryEventEdge {
+  # The item at the end of the edge
+  node: BoundaryEvent
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Catalog implements Node {
+  # The ID of an object
+  id: ID!
+  schema: Schema
+  EntityConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): EntityConnection
+  TimerConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): TimerConnection
+  ReservationConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ReservationConnection
+  UserConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): UserConnection
+  SessionStoreConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): SessionStoreConnection
+  UserTaskConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): UserTaskConnection
+  SubprocessExternalConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): SubprocessExternalConnection
+  SubprocessInternalConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): SubprocessInternalConnection
+  StartEventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): StartEventConnection
+  CatchEventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): CatchEventConnection
+  ThrowEventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ThrowEventConnection
+  ServiceTaskConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ServiceTaskConnection
+  ScriptTaskConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ScriptTaskConnection
+  ProcessTokenConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessTokenConnection
+  ProcessDefConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessDefConnection
+  ProcessConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessConnection
+  ParallelGatewayConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ParallelGatewayConnection
+  NodeInstanceConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): NodeInstanceConnection
+  NodeDefConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): NodeDefConnection
+  LaneConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): LaneConnection
+  FlowDefConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): FlowDefConnection
+  ExclusiveGatewayConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ExclusiveGatewayConnection
+  EventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): EventConnection
+  EndEventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): EndEventConnection
+  BoundaryEventConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): BoundaryEventConnection
+}
+
+type CatchEvent {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type CatchEventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [CatchEventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type CatchEventEdge {
+  # The item at the end of the edge
+  node: CatchEvent
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Class {
+  name: String!
+  attributes: [Attribute]
+}
+
+# A connection to a list of items.
+type ClassConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ClassEdge]
+}
+
+# An edge in a connection.
+type ClassEdge {
+  # The item at the end of the edge
+  node: Class
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input CreateBoundaryEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateBoundaryEventPayload {
+  entityEdge: BoundaryEventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateCatchEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateCatchEventPayload {
+  entityEdge: CatchEventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateEndEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateEndEventPayload {
+  entityEdge: EndEventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateEventPayload {
+  entityEdge: EventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateExclusiveGatewayInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateExclusiveGatewayPayload {
+  entityEdge: ExclusiveGatewayEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateFlowDefInput {
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  source: NodeDefReferenceInput
+  target: NodeDefReferenceInput
+  condition: String
+  counter: Float
+  clientMutationId: String
+}
+
+type CreateFlowDefPayload {
+  entityEdge: FlowDefEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateLaneInput {
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  counter: Float
+  clientMutationId: String
+}
+
+type CreateLanePayload {
+  entityEdge: LaneEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateNodeDefInput {
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  lane: LaneReferenceInput
+  type: String
+  attachedToNode: NodeDefReferenceInput
+  script: String
+  eventType: String
+  cancelActivity: Boolean
+  subProcessKey: String
+  subProcessDef: NodeDefReferenceInput
+  counter: Float
+  timerDefinitionType: Float
+  timerDefinition: String
+  startContext: String
+  startContextEntityType: String
+  signal: String
+  message: String
+  condition: String
+  clientMutationId: String
+}
+
+type CreateNodeDefPayload {
+  entityEdge: NodeDefEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateNodeInstanceInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateNodeInstancePayload {
+  entityEdge: NodeInstanceEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateParallelGatewayInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  parallelType: String
+  clientMutationId: String
+}
+
+type CreateParallelGatewayPayload {
+  entityEdge: ParallelGatewayEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateProcessDefInput {
+  name: String
+  key: String
+  defId: String
+  xml: String
+  internalName: String
+  path: String
+  category: String
+  module: String
+  readonly: Boolean
+  version: String
+  counter: Float
+  nodeDefCollection: NodeDefReferenceInput
+  flowDefCollection: FlowDefReferenceInput
+  laneCollection: LaneReferenceInput
+  clientMutationId: String
+}
+
+type CreateProcessDefPayload {
+  entityEdge: ProcessDefEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateProcessInput {
+  name: String
+  key: String
+  status: String
+  processDef: ProcessDefReferenceInput
+  isSubProcess: Boolean
+  callerId: String
+  clientMutationId: String
+}
+
+type CreateProcessPayload {
+  entityEdge: ProcessEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateProcessTokenInput {
+  process: ProcessReferenceInput
+  clientMutationId: String
+}
+
+type CreateProcessTokenPayload {
+  entityEdge: ProcessTokenEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateReservationInput {
+  name: String
+  category: String
+  isOneWay: Boolean
+  navigationSystem: Boolean
+  additionalDriver: Boolean
+  price: Float
+  clientMutationId: String
+}
+
+type CreateReservationPayload {
+  entityEdge: ReservationEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateScriptTaskInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  script: String
+  clientMutationId: String
+}
+
+type CreateScriptTaskPayload {
+  entityEdge: ScriptTaskEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateServiceTaskInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateServiceTaskPayload {
+  entityEdge: ServiceTaskEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateSessionStoreInput {
+  identityId: String
+  systemUserId: String
+  clientMutationId: String
+}
+
+type CreateSessionStorePayload {
+  entityEdge: SessionStoreEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateStartEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateStartEventPayload {
+  entityEdge: StartEventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateSubprocessExternalInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateSubprocessExternalPayload {
+  entityEdge: SubprocessExternalEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateSubprocessInternalInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateSubprocessInternalPayload {
+  entityEdge: SubprocessInternalEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateThrowEventInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateThrowEventPayload {
+  entityEdge: ThrowEventEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateTimerInput {
+  timerType: Float
+  timerIsoString: String
+  eventName: String
+  lastElapsed: Date
+  clientMutationId: String
+}
+
+type CreateTimerPayload {
+  entityEdge: TimerEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateUserInput {
+  name: String
+  password: String
+  roles: String
+  clientMutationId: String
+}
+
+type CreateUserPayload {
+  entityEdge: UserEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input CreateUserTaskInput {
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type CreateUserTaskPayload {
+  entityEdge: UserTaskEdge
+  catalog: Catalog
+  clientMutationId: String
+}
+
+scalar Date
+
+type EndEvent {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type EndEventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [EndEventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type EndEventEdge {
+  # The item at the end of the edge
+  node: EndEvent
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Entity {
+  id: ID!
+}
+
+# A connection to a list of items.
+type EntityConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [EntityEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type EntityEdge {
+  # The item at the end of the edge
+  node: Entity
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Event {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type EventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [EventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type EventEdge {
+  # The item at the end of the edge
+  node: Event
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ExclusiveGateway {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+  follow: String
+}
+
+# A connection to a list of items.
+type ExclusiveGatewayConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ExclusiveGatewayEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ExclusiveGatewayEdge {
+  # The item at the end of the edge
+  node: ExclusiveGateway
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type FlowDef {
+  id: ID!
+  name: String
+  key: String
+  processDef: ProcessDef
+  source: NodeDef
+  target: NodeDef
+  condition: String
+  extensions: String
+  counter: Float
+}
+
+# A connection to a list of items.
+type FlowDefConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FlowDefEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type FlowDefEdge {
+  # The item at the end of the edge
+  node: FlowDef
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input FlowDefReferenceInput {
+  id: ID!
+}
+
+type Identity {
+  id: ID
+  name: String
+  hasRoles: [String]
+}
+
+type Lane {
+  id: ID!
+  name: String
+  key: String
+  extensions: String
+  processDef: ProcessDef
+  counter: Float
+}
+
+# A connection to a list of items.
+type LaneConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [LaneEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type LaneEdge {
+  # The item at the end of the edge
+  node: Lane
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input LaneReferenceInput {
+  id: ID!
+}
+
+type Mutation {
+  createTimer(input: CreateTimerInput!): CreateTimerPayload
+  updateTimer(input: UpdateTimerInput!): UpdateTimerPayload
+  removeTimer(input: RemoveTimerInput!): RemoveTimerPayload
+  createReservation(input: CreateReservationInput!): CreateReservationPayload
+  updateReservation(input: UpdateReservationInput!): UpdateReservationPayload
+  removeReservation(input: RemoveReservationInput!): RemoveReservationPayload
+  createUser(input: CreateUserInput!): CreateUserPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+  removeUser(input: RemoveUserInput!): RemoveUserPayload
+  createSessionStore(input: CreateSessionStoreInput!): CreateSessionStorePayload
+  updateSessionStore(input: UpdateSessionStoreInput!): UpdateSessionStorePayload
+  removeSessionStore(input: RemoveSessionStoreInput!): RemoveSessionStorePayload
+  createUserTask(input: CreateUserTaskInput!): CreateUserTaskPayload
+  updateUserTask(input: UpdateUserTaskInput!): UpdateUserTaskPayload
+  removeUserTask(input: RemoveUserTaskInput!): RemoveUserTaskPayload
+  createSubprocessExternal(input: CreateSubprocessExternalInput!): CreateSubprocessExternalPayload
+  updateSubprocessExternal(input: UpdateSubprocessExternalInput!): UpdateSubprocessExternalPayload
+  removeSubprocessExternal(input: RemoveSubprocessExternalInput!): RemoveSubprocessExternalPayload
+  createSubprocessInternal(input: CreateSubprocessInternalInput!): CreateSubprocessInternalPayload
+  updateSubprocessInternal(input: UpdateSubprocessInternalInput!): UpdateSubprocessInternalPayload
+  removeSubprocessInternal(input: RemoveSubprocessInternalInput!): RemoveSubprocessInternalPayload
+  createStartEvent(input: CreateStartEventInput!): CreateStartEventPayload
+  updateStartEvent(input: UpdateStartEventInput!): UpdateStartEventPayload
+  removeStartEvent(input: RemoveStartEventInput!): RemoveStartEventPayload
+  createCatchEvent(input: CreateCatchEventInput!): CreateCatchEventPayload
+  updateCatchEvent(input: UpdateCatchEventInput!): UpdateCatchEventPayload
+  removeCatchEvent(input: RemoveCatchEventInput!): RemoveCatchEventPayload
+  createThrowEvent(input: CreateThrowEventInput!): CreateThrowEventPayload
+  updateThrowEvent(input: UpdateThrowEventInput!): UpdateThrowEventPayload
+  removeThrowEvent(input: RemoveThrowEventInput!): RemoveThrowEventPayload
+  createServiceTask(input: CreateServiceTaskInput!): CreateServiceTaskPayload
+  updateServiceTask(input: UpdateServiceTaskInput!): UpdateServiceTaskPayload
+  removeServiceTask(input: RemoveServiceTaskInput!): RemoveServiceTaskPayload
+  createScriptTask(input: CreateScriptTaskInput!): CreateScriptTaskPayload
+  updateScriptTask(input: UpdateScriptTaskInput!): UpdateScriptTaskPayload
+  removeScriptTask(input: RemoveScriptTaskInput!): RemoveScriptTaskPayload
+  createProcessToken(input: CreateProcessTokenInput!): CreateProcessTokenPayload
+  updateProcessToken(input: UpdateProcessTokenInput!): UpdateProcessTokenPayload
+  removeProcessToken(input: RemoveProcessTokenInput!): RemoveProcessTokenPayload
+  createProcessDef(input: CreateProcessDefInput!): CreateProcessDefPayload
+  updateProcessDef(input: UpdateProcessDefInput!): UpdateProcessDefPayload
+  removeProcessDef(input: RemoveProcessDefInput!): RemoveProcessDefPayload
+  createProcess(input: CreateProcessInput!): CreateProcessPayload
+  updateProcess(input: UpdateProcessInput!): UpdateProcessPayload
+  removeProcess(input: RemoveProcessInput!): RemoveProcessPayload
+  createParallelGateway(input: CreateParallelGatewayInput!): CreateParallelGatewayPayload
+  updateParallelGateway(input: UpdateParallelGatewayInput!): UpdateParallelGatewayPayload
+  removeParallelGateway(input: RemoveParallelGatewayInput!): RemoveParallelGatewayPayload
+  createNodeInstance(input: CreateNodeInstanceInput!): CreateNodeInstancePayload
+  updateNodeInstance(input: UpdateNodeInstanceInput!): UpdateNodeInstancePayload
+  removeNodeInstance(input: RemoveNodeInstanceInput!): RemoveNodeInstancePayload
+  createNodeDef(input: CreateNodeDefInput!): CreateNodeDefPayload
+  updateNodeDef(input: UpdateNodeDefInput!): UpdateNodeDefPayload
+  removeNodeDef(input: RemoveNodeDefInput!): RemoveNodeDefPayload
+  createLane(input: CreateLaneInput!): CreateLanePayload
+  updateLane(input: UpdateLaneInput!): UpdateLanePayload
+  removeLane(input: RemoveLaneInput!): RemoveLanePayload
+  createFlowDef(input: CreateFlowDefInput!): CreateFlowDefPayload
+  updateFlowDef(input: UpdateFlowDefInput!): UpdateFlowDefPayload
+  removeFlowDef(input: RemoveFlowDefInput!): RemoveFlowDefPayload
+  createExclusiveGateway(input: CreateExclusiveGatewayInput!): CreateExclusiveGatewayPayload
+  updateExclusiveGateway(input: UpdateExclusiveGatewayInput!): UpdateExclusiveGatewayPayload
+  removeExclusiveGateway(input: RemoveExclusiveGatewayInput!): RemoveExclusiveGatewayPayload
+  createEvent(input: CreateEventInput!): CreateEventPayload
+  updateEvent(input: UpdateEventInput!): UpdateEventPayload
+  removeEvent(input: RemoveEventInput!): RemoveEventPayload
+  createEndEvent(input: CreateEndEventInput!): CreateEndEventPayload
+  updateEndEvent(input: UpdateEndEventInput!): UpdateEndEventPayload
+  removeEndEvent(input: RemoveEndEventInput!): RemoveEndEventPayload
+  createBoundaryEvent(input: CreateBoundaryEventInput!): CreateBoundaryEventPayload
+  updateBoundaryEvent(input: UpdateBoundaryEventInput!): UpdateBoundaryEventPayload
+  removeBoundaryEvent(input: RemoveBoundaryEventInput!): RemoveBoundaryEventPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+type NodeDef {
+  id: ID!
+  name: String
+  key: String
+  processDef: ProcessDef
+  lane: Lane
+  type: String
+  extensions: String
+  attachedToNode: NodeDef
+  events: String
+  script: String
+  eventType: String
+  cancelActivity: Boolean
+  subProcessKey: String
+  subProcessDef: NodeDef
+  counter: Float
+  timerDefinitionType: Float
+  timerDefinition: String
+  startContext: String
+  startContextEntityType: String
+  signal: String
+  message: String
+  condition: String
+}
+
+# A connection to a list of items.
+type NodeDefConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [NodeDefEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type NodeDefEdge {
+  # The item at the end of the edge
+  node: NodeDef
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input NodeDefReferenceInput {
+  id: ID!
+}
+
+type NodeInstance {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type NodeInstanceConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [NodeInstanceEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type NodeInstanceEdge {
+  # The item at the end of the edge
+  node: NodeInstance
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type ParallelGateway {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+  parallelType: String
+}
+
+# A connection to a list of items.
+type ParallelGatewayConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ParallelGatewayEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ParallelGatewayEdge {
+  # The item at the end of the edge
+  node: ParallelGateway
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Process {
+  id: ID!
+  name: String
+  key: String
+  status: String
+  processDef: ProcessDef
+  isSubProcess: Boolean
+  callerId: String
+}
+
+# A connection to a list of items.
+type ProcessConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessEdge]
+  totalCount: Int
+}
+
+type ProcessDef {
+  id: ID!
+  name: String
+  key: String
+  defId: String
+  xml: String
+  extensions: String
+  internalName: String
+  path: String
+  category: String
+  module: String
+  readonly: Boolean
+  version: String
+  counter: Float
+  nodeDefCollection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessDefEntity_nodeDefCollection_ConnectionConnection
+  flowDefCollection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessDefEntity_flowDefCollection_ConnectionConnection
+  laneCollection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ProcessDefEntity_laneCollection_ConnectionConnection
+}
+
+# A connection to a list of items.
+type ProcessDefConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessDefEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ProcessDefEdge {
+  # The item at the end of the edge
+  node: ProcessDef
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type ProcessDefEntity_flowDefCollection_ConnectionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessDefEntity_flowDefCollection_ConnectionEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ProcessDefEntity_flowDefCollection_ConnectionEdge {
+  # The item at the end of the edge
+  node: FlowDef
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type ProcessDefEntity_laneCollection_ConnectionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessDefEntity_laneCollection_ConnectionEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ProcessDefEntity_laneCollection_ConnectionEdge {
+  # The item at the end of the edge
+  node: Lane
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type ProcessDefEntity_nodeDefCollection_ConnectionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessDefEntity_nodeDefCollection_ConnectionEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ProcessDefEntity_nodeDefCollection_ConnectionEdge {
+  # The item at the end of the edge
+  node: NodeDef
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input ProcessDefReferenceInput {
+  id: ID!
+}
+
+# An edge in a connection.
+type ProcessEdge {
+  # The item at the end of the edge
+  node: Process
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input ProcessReferenceInput {
+  id: ID!
+}
+
+type ProcessToken {
+  id: ID!
+  data: String
+  process: Process
+}
+
+# A connection to a list of items.
+type ProcessTokenConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ProcessTokenEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ProcessTokenEdge {
+  # The item at the end of the edge
+  node: ProcessToken
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input ProcessTokenReferenceInput {
+  id: ID!
+}
+
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  viewer: Viewer
+  catalog: Catalog
+}
+
+input RemoveBoundaryEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveBoundaryEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveCatchEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveCatchEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveEndEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveEndEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveExclusiveGatewayInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveExclusiveGatewayPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveFlowDefInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveFlowDefPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveLaneInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveLanePayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveNodeDefInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveNodeDefPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveNodeInstanceInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveNodeInstancePayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveParallelGatewayInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveParallelGatewayPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveProcessDefInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveProcessDefPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveProcessInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveProcessPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveProcessTokenInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveProcessTokenPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveReservationInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveReservationPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveScriptTaskInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveScriptTaskPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveServiceTaskInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveServiceTaskPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveSessionStoreInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveSessionStorePayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveStartEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveStartEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveSubprocessExternalInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveSubprocessExternalPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveSubprocessInternalInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveSubprocessInternalPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveThrowEventInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveThrowEventPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveTimerInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveTimerPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveUserInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveUserPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input RemoveUserTaskInput {
+  id: ID!
+  clientMutationId: String
+}
+
+type RemoveUserTaskPayload {
+  deletedId: ID
+  catalog: Catalog
+  clientMutationId: String
+}
+
+type Reservation {
+  id: ID!
+  name: String
+  category: String
+  isOneWay: Boolean
+  navigationSystem: Boolean
+  additionalDriver: Boolean
+  price: Float
+}
+
+# A connection to a list of items.
+type ReservationConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ReservationEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ReservationEdge {
+  # The item at the end of the edge
+  node: Reservation
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Schema implements Node {
+  # The ID of an object
+  id: ID!
+  ClassConnection(after: String, first: Int, before: String, last: Int, query: String, find: String, orderBy: String, offset: Int): ClassConnection
+}
+
+type ScriptTask {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+  script: String
+}
+
+# A connection to a list of items.
+type ScriptTaskConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ScriptTaskEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ScriptTaskEdge {
+  # The item at the end of the edge
+  node: ScriptTask
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ServiceTask {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type ServiceTaskConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ServiceTaskEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ServiceTaskEdge {
+  # The item at the end of the edge
+  node: ServiceTask
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SessionStore {
+  id: ID!
+  identityId: String
+  systemUserId: String
+  data: String
+  roles: String
+}
+
+# A connection to a list of items.
+type SessionStoreConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SessionStoreEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SessionStoreEdge {
+  # The item at the end of the edge
+  node: SessionStore
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type StartEvent {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type StartEventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [StartEventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type StartEventEdge {
+  # The item at the end of the edge
+  node: StartEvent
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SubprocessExternal {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type SubprocessExternalConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SubprocessExternalEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SubprocessExternalEdge {
+  # The item at the end of the edge
+  node: SubprocessExternal
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SubprocessInternal {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type SubprocessInternalConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SubprocessInternalEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SubprocessInternalEdge {
+  # The item at the end of the edge
+  node: SubprocessInternal
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ThrowEvent {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type ThrowEventConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ThrowEventEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ThrowEventEdge {
+  # The item at the end of the edge
+  node: ThrowEvent
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Timer {
+  id: ID!
+  timerType: Float
+  timerIsoString: String
+  timerRule: String
+  eventName: String
+  lastElapsed: Date
+}
+
+# A connection to a list of items.
+type TimerConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [TimerEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type TimerEdge {
+  # The item at the end of the edge
+  node: Timer
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input UpdateBoundaryEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateBoundaryEventPayload {
+  entity: BoundaryEvent
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateCatchEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateCatchEventPayload {
+  entity: CatchEvent
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateEndEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateEndEventPayload {
+  entity: EndEvent
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateEventPayload {
+  entity: Event
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateExclusiveGatewayInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateExclusiveGatewayPayload {
+  entity: ExclusiveGateway
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateFlowDefInput {
+  id: ID!
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  source: NodeDefReferenceInput
+  target: NodeDefReferenceInput
+  condition: String
+  counter: Float
+  clientMutationId: String
+}
+
+type UpdateFlowDefPayload {
+  entity: FlowDef
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateLaneInput {
+  id: ID!
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  counter: Float
+  clientMutationId: String
+}
+
+type UpdateLanePayload {
+  entity: Lane
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateNodeDefInput {
+  id: ID!
+  name: String
+  key: String
+  processDef: ProcessDefReferenceInput
+  lane: LaneReferenceInput
+  type: String
+  attachedToNode: NodeDefReferenceInput
+  script: String
+  eventType: String
+  cancelActivity: Boolean
+  subProcessKey: String
+  subProcessDef: NodeDefReferenceInput
+  counter: Float
+  timerDefinitionType: Float
+  timerDefinition: String
+  startContext: String
+  startContextEntityType: String
+  signal: String
+  message: String
+  condition: String
+  clientMutationId: String
+}
+
+type UpdateNodeDefPayload {
+  entity: NodeDef
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateNodeInstanceInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateNodeInstancePayload {
+  entity: NodeInstance
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateParallelGatewayInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  parallelType: String
+  clientMutationId: String
+}
+
+type UpdateParallelGatewayPayload {
+  entity: ParallelGateway
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateProcessDefInput {
+  id: ID!
+  name: String
+  key: String
+  defId: String
+  xml: String
+  internalName: String
+  path: String
+  category: String
+  module: String
+  readonly: Boolean
+  version: String
+  counter: Float
+  nodeDefCollection: NodeDefReferenceInput
+  flowDefCollection: FlowDefReferenceInput
+  laneCollection: LaneReferenceInput
+  clientMutationId: String
+}
+
+type UpdateProcessDefPayload {
+  entity: ProcessDef
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateProcessInput {
+  id: ID!
+  name: String
+  key: String
+  status: String
+  processDef: ProcessDefReferenceInput
+  isSubProcess: Boolean
+  callerId: String
+  clientMutationId: String
+}
+
+type UpdateProcessPayload {
+  entity: Process
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateProcessTokenInput {
+  id: ID!
+  process: ProcessReferenceInput
+  clientMutationId: String
+}
+
+type UpdateProcessTokenPayload {
+  entity: ProcessToken
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateReservationInput {
+  id: ID!
+  name: String
+  category: String
+  isOneWay: Boolean
+  navigationSystem: Boolean
+  additionalDriver: Boolean
+  price: Float
+  clientMutationId: String
+}
+
+type UpdateReservationPayload {
+  entity: Reservation
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateScriptTaskInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  script: String
+  clientMutationId: String
+}
+
+type UpdateScriptTaskPayload {
+  entity: ScriptTask
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateServiceTaskInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateServiceTaskPayload {
+  entity: ServiceTask
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateSessionStoreInput {
+  id: ID!
+  identityId: String
+  systemUserId: String
+  clientMutationId: String
+}
+
+type UpdateSessionStorePayload {
+  entity: SessionStore
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateStartEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateStartEventPayload {
+  entity: StartEvent
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateSubprocessExternalInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateSubprocessExternalPayload {
+  entity: SubprocessExternal
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateSubprocessInternalInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateSubprocessInternalPayload {
+  entity: SubprocessInternal
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateThrowEventInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateThrowEventPayload {
+  entity: ThrowEvent
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateTimerInput {
+  id: ID!
+  timerType: Float
+  timerIsoString: String
+  eventName: String
+  lastElapsed: Date
+  clientMutationId: String
+}
+
+type UpdateTimerPayload {
+  entity: Timer
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  password: String
+  roles: String
+  clientMutationId: String
+}
+
+type UpdateUserPayload {
+  entity: User
+  catalog: Catalog
+  clientMutationId: String
+}
+
+input UpdateUserTaskInput {
+  id: ID!
+  name: String
+  key: String
+  process: ProcessReferenceInput
+  nodeDef: NodeDefReferenceInput
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessTokenReferenceInput
+  instanceCounter: Float
+  clientMutationId: String
+}
+
+type UpdateUserTaskPayload {
+  entity: UserTask
+  catalog: Catalog
+  clientMutationId: String
+}
+
+type User {
+  id: ID!
+  name: String
+  password: String
+  roles: String
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type UserTask {
+  id: ID!
+  name: String
+  key: String
+  process: Process
+  nodeDef: NodeDef
+  type: String
+  state: String
+  participant: String
+  processToken: ProcessToken
+  instanceCounter: Float
+}
+
+# A connection to a list of items.
+type UserTaskConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserTaskEdge]
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserTaskEdge {
+  # The item at the end of the edge
+  node: UserTask
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Viewer implements Node {
+  # The ID of an object
+  id: ID!
+  identity: Identity
+}

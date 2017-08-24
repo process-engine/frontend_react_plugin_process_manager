@@ -1,0 +1,4 @@
+{
+  "graphQLSchemaPath": "./src/helpers/schema",
+  "graphQLSchemaFileName": "graphql-schema.json"
+}

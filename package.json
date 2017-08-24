@@ -1,0 +1,50 @@
+{
+  "name": "@process-engine-js/frontend_react_plugin_process_manager",
+  "publishConfig": {
+    "registry": "https://www.npmjs.com"
+  },
+  "version": "1.0.0",
+  "description": "MUI based Prozess Manager",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "contributors": [
+    "Sebastian Meier <sebastian.meier@5minds.de>",
+    "Patrick Pötschke <patrick.poetschke@quantusflow.com>",
+    "Simon Reymann <simon.reymann@quantusflow.com>"
+  ],
+  "dependencies": {
+    "@process-engine-js/frontend_mui": "^1.0.4",
+    "@process-engine-js/process_engine_client_processable_react": "^1.0.10",
+    "babel-runtime": "^6.23.0",
+    "bpmn-js": "^0.20.7",
+    "bpmn-js-properties-panel": "^0.14.0",
+    "camunda-bpmn-moddle": "^0.11.0",
+    "classnames": "^2.2.5",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1",
+    "jquery": "^3.2.1",
+    "material-ui": "^0.18.6",
+    "react-redux": "^5.0.5",
+    "react-router-redux": "^4.0.8",
+    "react-transform-catch-errors": "^1.0.2",
+    "redbox-react": "^1.4.2",
+    "redux": "^3.7.1",
+    "redux-api": "^0.10.6",
+    "redux-async-connect": "^1.0.0-rc4"
+  },
+  "devDependencies": {
+    "babel-plugin-relay": "^1.2.0",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
+    "grunt-changed": "^1.1.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "peerDependencies": {
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-relay": "^0.9.3"
+  }
+}

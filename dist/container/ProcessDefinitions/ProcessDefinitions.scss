@@ -1,0 +1,167 @@
+@import "../../theme/Default/variables.scss";
+
+.gridListBox {
+  text-align: left;
+  background-color: white;
+  border: solid 1px #DCDBDC;
+
+  width: 100%;
+  height: 100%;
+}
+.gridListBoxNoFrame {
+  text-align: left;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+}
+
+.gridTile {
+  width: 100%;
+  height: 100%;
+}
+
+.itemHeader {
+  background-color: #000000;
+  padding-left: 10px;
+  padding-bottom: 2px;
+  margin-bottom: 1px;
+  font-size: 22px;
+  font-family: 'Open Sans Condensed Bold';
+  text-transform: uppercase;
+  color: white;
+}
+
+.gridTextField {
+
+}
+
+.tableRow {
+  border: 0px !important;
+  border-right: 1px solid #DCDBDC !important;
+}
+.tableHeaderRow {
+  border: 0px !important;
+  border-right: 1px solid #DCDBDC !important;
+
+  > thead {
+    > tr {
+      > th {
+        border-bottom: 1px solid #DCDBDC !important;
+      }
+    }
+  }
+}
+
+.createButton, .itemBasedButton {
+  min-width: 30px !important;
+  margin-left: 10px;
+
+  > button {
+    border-radius: 0px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    width: 30px !important;
+
+    > div {
+      background-color: $brand-primary;
+
+      > div {
+        border-radius: 0px !important;
+        height: 30px !important;
+        line-height: 30px !important;
+        width: 30px !important;
+
+        > span {
+          top: 0px;
+          padding-left: 2px !important;
+          padding-right: 2px !important;
+        }
+      }
+    }
+  }
+}
+
+.itemBasedMoreButton {
+  min-width: 30px !important;
+
+  > button {
+    border-radius: 0px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+
+    > div {
+      background-color: $brand-primary;
+
+      > div {
+        border-radius: 0px !important;
+        height: 30px !important;
+        line-height: 30px !important;
+
+        > svg {
+          position: relative;
+          top: -2px;
+          margin-right: $distance-half-primary !important;
+        }
+
+        > span {
+          top: 0px;
+          padding-left: $distance-primary !important;
+          padding-right: $distance-half-primary !important;
+        }
+      }
+    }
+  }
+}
+
+.searchField {
+  margin-left: $distance-primary
+}
+
+.tableColumn {
+  border: 0px !important;
+  border-bottom: 1px solid #DCDBDC !important;
+  border-left: 1px solid #DCDBDC !important;
+}
+
+.tableColumnSelector {
+  border: 0px !important;
+  border-top: 1px solid #DCDBDC !important;
+  border-bottom: 1px solid #DCDBDC !important;
+  border-left: 1px solid #DCDBDC !important;
+  padding: 5px !important;
+  > div {
+    width: 20px !important;
+    height: 20px !important;
+    background-color: #DCDBDC !important;
+  }
+}
+
+.tableHeaderColumnSelector {
+  border: 0px !important;
+  border-bottom: 1px solid #DCDBDC !important;
+  border-left: 1px solid #DCDBDC !important;
+  padding: 5px !important;
+  > div {
+    width: 20px !important;
+    height: 20px !important;
+    background-color: #DCDBDC !important;
+  }
+}
+
+.tableBar {
+
+}
+
+.contentOverlay {
+  position: absolute;
+  z-index: 3;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+
+  background: -moz-linear-gradient(top,  $brand-primary-a1 0%, $brand-primary-a0 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  $brand-primary-a1 0%,$brand-primary-a0 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  $brand-primary-a1 0%,$brand-primary-a0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=$brand-primary, endColorstr=$brand-primary,GradientType=0 ); /* IE6-9 */
+}
