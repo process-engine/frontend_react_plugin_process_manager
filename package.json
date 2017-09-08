@@ -55,5 +55,9 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-relay": "^0.9.3"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "prepublishOnly": "npm run build"
   }
 }
