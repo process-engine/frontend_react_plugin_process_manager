@@ -30,7 +30,11 @@
     "redbox-react": "^1.4.2",
     "redux": "^3.7.1",
     "redux-api": "^0.10.6",
-    "redux-async-connect": "^1.0.0-rc4"
+    "redux-async-connect": "^1.0.0-rc4",
+    "graphql": "0.8.2",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-relay": "^0.9.3"
   },
   "devDependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -50,11 +54,6 @@
     "gulp": "^3.9.1",
     "gulptraum": "^2.2.1",
     "load-grunt-tasks": "^3.5.2"
-  },
-  "peerDependencies": {
-    "react": "^15.4.0",
-    "react-dom": "^15.4.0",
-    "react-relay": "^0.9.3"
   },
   "scripts": {
     "build": "npm install --only='dev' && grunt",
