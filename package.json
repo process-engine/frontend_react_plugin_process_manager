@@ -61,7 +61,7 @@
     "nconf": "^0.8.4"
   },
   "scripts": {
-    "build": "grunt",
-    "prepare": "npm run build"
+    "build": "npm install --only='dev'",
+    "prepare": "grunt"
   }
 }
