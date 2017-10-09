@@ -6,7 +6,7 @@ import cn from 'classnames';
 import ProcessableCrudTable from '@process-engine-js/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
 import { applyTheme } from '../../theme/themeProvider';
 
-class ProcessDefinitions extends Component {
+class TodoBasket extends Component {
   static propTypes = {
     catalog: PropTypes.object,
     executionContext: PropTypes.object,
@@ -21,7 +21,7 @@ class ProcessDefinitions extends Component {
     if (global.__SERVER__) {
       return null;
     }
-    return require('./ProcessDefinitions.scss');
+    return require('./TodoBasket.scss');
   })();
 
   static contextTypes = {
@@ -49,26 +49,10 @@ class ProcessDefinitions extends Component {
 
   columnSchema = [
     { name: 'ID', thcProps: { hidden: true, dataField: 'id', isKey: true }, searchable: true },
-    { name: 'Name', thcProps: { dataField: 'name', dataSort: true }, searchable: true },
-    { name: 'Key', thcProps: { dataField: 'key', dataSort: true }, searchable: true }
+    { name: 'Name', thcProps: { dataField: 'name', dataSort: true }, searchable: true }
   ];
 
-  itemBasedButtonSchema = [
-    {
-      key: 'delete',
-      name: 'Prozess löschen',
-      processableKey: 'DeleteProcessDef',
-      icon: <DeleteIcon/>,
-      themes: {
-        buttonTheme: applyTheme('DeleteProcessDef'),
-        dialogTheme: applyTheme('DeleteProcessDef'),
-        formItemTheme: applyTheme('FormItem'),
-        confirmTheme: applyTheme('ConfirmItem'),
-        widgetTheme: applyTheme('DeleteProcessDef'),
-        theme: applyTheme('ProcessDefinitions')
-      }
-    }
-  ];
+  itemBasedButtonSchema = [];
 
   listBasedButtonSchema = [];
 
@@ -81,15 +65,15 @@ class ProcessDefinitions extends Component {
 
     const processableCrudTable = (
       <ProcessableCrudTable
-        title='Prozesse'
+        title='Aufgaben'
 
         executionContext={this.props.executionContext}
         processEngineClientApi={(this.props.route.injectables ? this.props.route.injectables.processEngineClientApi : null)}
 
-        entityTypeName={"ProcessDef"}
+        entityTypeName={"NodeInstance"}
         fetcher={(partialVariables, onReadyStateChange) => this.props.relay.forceFetch(partialVariables, onReadyStateChange)}
         baseFilter={this.getBaseFilter}
-        entityCollection={this.props.catalog.processDefinitions}
+        entityCollection={this.props.catalog.todos}
 
         onRowDoubleClick={(row) => this.handleRowDoubleClick(row)}
 
@@ -97,10 +81,10 @@ class ProcessDefinitions extends Component {
 
         processButtonTheme={applyTheme('ProcessManager')}
         processDialogTheme={applyTheme('ProcessManager')}
-        processFormItemTheme={applyTheme('ProcessDefinitionFormItem')}
-        processConfirmTheme={applyTheme('ProcessDefinitionConfirmItem')}
+        processFormItemTheme={applyTheme('TodoBasketFormItem')}
+        processConfirmTheme={applyTheme('TodoBasketConfirmItem')}
         processWidgetTheme={applyTheme('ProcessManager')}
-        processTheme={applyTheme('ProcessDefinitions')}
+        processTheme={applyTheme('TodoBasket')}
 
         columnSchema={this.columnSchema}
         itemBasedButtonSchema={this.itemBasedButtonSchema}
@@ -125,28 +109,31 @@ class ProcessDefinitions extends Component {
         tableSelectorTheme={applyTheme('TableSelector')}
 
         tableStyles={{
-          headerContainerClassName: ProcessDefinitions.styles.headerContainer,
-          itemBasedElementsClassName: ProcessDefinitions.styles.itemBasedElements,
-          filterMenuElementsClassName: ProcessDefinitions.styles.filterMenuElements,
-          tableWithFrameClassName: ProcessDefinitions.styles.gridListBox,
-          tableWithoutFrameClassName: ProcessDefinitions.styles.gridListBoxNoFrame,
-          createButtonClassName: ProcessDefinitions.styles.createButton,
-          contentOverlayClassName: ProcessDefinitions.styles.contentOverlay,
-          tableBarClassName: ProcessDefinitions.styles.tableBar,
-          itemHeaderClassName: ProcessDefinitions.styles.itemHeader,
-          searchFieldClassName: ProcessDefinitions.styles.searchField,
-          itemBasedMoreButtonClassName: ProcessDefinitions.styles.itemBasedMoreButton,
-          itemBasedButtonClassName: ProcessDefinitions.styles.itemBasedButton,
-          tableRowClassName: ProcessDefinitions.styles.tableRow,
-          tableHeaderRowClassName: ProcessDefinitions.styles.tableHeaderRow,
-          tableColumnSelectorClassName: ProcessDefinitions.styles.tableColumnSelector,
-          tableHeaderColumnSelectorClassName: ProcessDefinitions.styles.tableHeaderColumnSelector
+          headerContainerClassName: TodoBasket.styles.headerContainer,
+          itemBasedElementsClassName: TodoBasket.styles.itemBasedElements,
+          filterMenuElementsClassName: TodoBasket.styles.filterMenuElements,
+          tableWithFrameClassName: TodoBasket.styles.gridListBox,
+          tableWithoutFrameClassName: TodoBasket.styles.gridListBoxNoFrame,
+          createButtonClassName: TodoBasket.styles.createButton,
+          contentOverlayClassName: TodoBasket.styles.contentOverlay,
+          tableBarClassName: TodoBasket.styles.tableBar,
+          itemHeaderClassName: TodoBasket.styles.itemHeader,
+          searchFieldClassName: TodoBasket.styles.searchField,
+          itemBasedMoreButtonClassName: TodoBasket.styles.itemBasedMoreButton,
+          itemBasedButtonClassName: TodoBasket.styles.itemBasedButton,
+          tableRowClassName: TodoBasket.styles.tableRow,
+          tableHeaderRowClassName: TodoBasket.styles.tableHeaderRow,
+          tableColumnSelectorClassName: TodoBasket.styles.tableColumnSelector,
+          tableHeaderColumnSelectorClassName: TodoBasket.styles.tableHeaderColumnSelector
+        }}
+        rbtProps={{
+          selectRow: null
         }}
       />
     );
 
     return (
-      <div className={cn(this.props.containerClassName, ProcessDefinitions.styles.processDefinitionsContainer)}>
+      <div className={cn(this.props.containerClassName, TodoBasket.styles.todoBasketContainer)}>
         {processableCrudTable}
         {children}
       </div>
@@ -154,7 +141,7 @@ class ProcessDefinitions extends Component {
   }
 }
 
-const RelayedProcessDefinitions = Relay.createContainer(ProcessDefinitions, {
+const RelayedTodoBasket = Relay.createContainer(TodoBasket, {
   initialVariables: {
     mode: 'initial',
     query: JSON.stringify({
@@ -175,13 +162,17 @@ const RelayedProcessDefinitions = Relay.createContainer(ProcessDefinitions, {
   fragments: {
     catalog: (variables) => Relay.QL`
       fragment on Catalog {
-        processDefinitions: ProcessDefConnection(query: $query, orderBy: $orderBy, first: $first, offset: $offset) {
+        todos: UserTaskConnection(query: $query, orderBy: $orderBy, first: $first, offset: $offset) {
           edges {
             node {
               id,
               name,
-              key,
-              defId
+              nodeDef {
+                id,
+                processDef {
+                  id
+                }
+              }
             },
             cursor
           },
@@ -197,4 +188,4 @@ const RelayedProcessDefinitions = Relay.createContainer(ProcessDefinitions, {
   }
 });
 
-export default RelayedProcessDefinitions;
+export default RelayedTodoBasket;

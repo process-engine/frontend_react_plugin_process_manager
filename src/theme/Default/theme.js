@@ -1,6 +1,7 @@
 import { colors, spacing, zIndex } from 'material-ui/styles';
 import { fade } from 'material-ui/utils/colorManipulator';
 import React from 'react';
+import CleanCheckbox from 'material-ui/svg-icons/action/done';
 
 const DemoTheme = {
   brand: {
@@ -139,21 +140,23 @@ theme.muiProps = {
       }
     }
   },
-  CreateProcessDefinition: {
-    Dialog: {
-      default: {
-        actionsContainerStyle: {
-          textAlign: 'center'
-        }
-      }
-    }
-  },
-  DeleteProcessDefinition: {
-    Dialog: {
-      default: {
-        actionsContainerStyle: {
-          textAlign: 'center'
-        }
+  ProcessManager: {
+    default: {
+      style: {
+        overflowY: 'auto'
+      },
+      titleStyle: {
+        backgroundColor: '#000',
+        padding: '0px 0px 0px 2px',
+        color: '#fff',
+        marginBottom: '2px',
+        fontSize: '24px',
+        lineHeight: '36px',
+        textTransform: 'uppercase'
+      },
+      bodyStyle: {
+        padding: '0px 8px',
+        fontSize: '16px'
       }
     }
   },
@@ -210,6 +213,12 @@ theme.muiProps = {
           textAlign: 'left',
           border: '0px'
         },
+        checkedIcon: <CleanCheckbox
+          style={{
+            width: '20px',
+            height: '20px'
+          }}
+        />,
         uncheckedIcon: <span/>
       }
     }
@@ -235,38 +244,6 @@ theme.qflProps = {
       }
     }
   },
-  CreateProcessDefinition: {
-    RaisedButton: {
-      default: {
-        style: {
-          textAlign: 'center',
-          paddingLeft: theme.distances.primary,
-          display: 'inline-block'
-        }
-      }
-    },
-    Dialog: {
-      default: {
-
-      }
-    }
-  },
-  DeleteProcessDefinition: {
-    RaisedButton: {
-      default: {
-        style: {
-          textAlign: 'center',
-          paddingLeft: theme.distances.primary,
-          display: 'inline-block'
-        }
-      }
-    },
-    Dialog: {
-      default: {
-
-      }
-    }
-  },
   ConfirmItem: {
 
   },
@@ -274,16 +251,51 @@ theme.qflProps = {
     RaisedButton: {
       default: {
         style: {
-          fontFamily: 'Open Sans Condensed Light'
+          width: 'auto',
+          display: 'inline-block',
+          verticalAlign: 'top',
+          position: 'relative',
+          marginLeft: '8px',
+          marginTop: '8px'
         }
       }
     },
     TextField: {
       default: {
         style: {
-          fontFamily: 'Open Sans Condensed Light'
+          marginTop: '8px'
         }
       }
+    },
+    DropDown: {
+      default: {
+        style: {
+          position: 'relative',
+          fontSize: 'inherit',
+          bottom: '0px',
+          width: '200px',
+          paddingTop: '0px',
+          display: 'inline-block',
+          marginLeft: '8px',
+          marginRight: '8px',
+          marginTop: '8px'
+        },
+        labelStyle: {
+          position: 'absolute',
+          fontSize: '18px',
+          left: '8px',
+          top: '-24px'
+        },
+        errorStyle: {
+          position: 'absolute',
+          right: '8px',
+          top: '-18px',
+          fontSize: '16px',
+          color: theme.brand.vorstartRed,
+          marginRight: '4px',
+          lineHeight: '16px',
+        }
+      },
     }
   },
   ProcessDefinitionConfirmItem: {
@@ -314,6 +326,69 @@ theme.qflProps = {
       default: {
         style: {
           display: 'table-row'
+        }
+      }
+    }
+  },
+  TodoBasketConfirmItem: {
+    RaisedButton: {
+      default: {
+        style: {
+          display: 'inline-block'
+        }
+      }
+    },
+  },
+  TodoBasketFormItem: {
+    CheckBox: {
+      default: {
+        style: {
+          display: 'table-row'
+        }
+      }
+    },
+    DropDown: {
+      default: {
+        style: {
+          display: 'table-row'
+        }
+      }
+    },
+    RadioBox: {
+      default: {
+        style: {
+          display: 'table-row'
+        }
+      }
+    }
+  }
+};
+
+theme.rbtProps = {
+  Table: {
+    Table: {
+      default: {
+        containerStyle: {
+          fontSize: '20px',
+          display: 'block',
+          width: '100%',
+          overflow: 'hidden',
+          marginLeft: '8px',
+          marginRight: '8px'
+        },
+        tableStyle: {
+          border: '0px',
+          borderTop: '1px solid #DCDBDC',
+          borderRadius: '0px',
+          margin: theme.distances.primary + ' 0px 0px 0px'
+        },
+        headerStyle: {
+          fontSize: '24px',
+          textTransform: 'uppercase',
+          height: '40px'
+        },
+        bodyStyle: {
+          textAlign: 'left'
         }
       }
     }

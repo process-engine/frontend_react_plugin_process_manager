@@ -39,6 +39,7 @@ class ProcessDefinition extends Component {
     catalog: PropTypes.object,
     relay: PropTypes.object,
     route: PropTypes.object,
+    params: PropTypes.object,
     containerClassName: PropTypes.string
   };
 
@@ -56,11 +57,21 @@ class ProcessDefinition extends Component {
     return null;
   }
 
+  static getUserTask(props) {
+    if (props && props.catalog && props.catalog.userTasks && props.catalog.userTasks.edges &&
+      props.catalog.userTasks.edges.length === 1 && props.catalog.userTasks.edges[0] && props.catalog.userTasks.edges[0].node) {
+      return props.catalog.userTasks.edges[0].node;
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       currentProcess: ProcessDefinition.getCurrentProcess(props),
+      currentUserTaskToExecute: ProcessDefinition.getUserTask(props),
       currentBpmnProcessKey: null,
       bpmnOnProcessEnded: null,
       bpmnProcessInstance: null,
@@ -110,6 +121,11 @@ class ProcessDefinition extends Component {
         if (this.state.currentProcess && this.state.currentProcess.xml) {
           const xml = this.state.currentProcess.xml;
           this.openDiagram(xml);
+        }
+
+        if (this.state.currentUserTaskToExecute) {
+          // Load task, create ProcessInstance and render ProcessContainer with it
+          this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute);
         }
       }
     }, 0);
@@ -179,6 +195,29 @@ class ProcessDefinition extends Component {
             .removeClass('with-error')
             .addClass('with-diagram');
         }
+      });
+    }
+  };
+
+  async handleStartTask(processKey, userTaskEntity, onProcessEnded, done) {
+    if (this.props.route.injectables && this.props.route.injectables.processEngineClientApi) {
+      const processEngineClientApi = this.props.route.injectables.processEngineClientApi;
+      this.setState({
+        currentBpmnProcessKey: processKey,
+        bpmnOnProcessEnded: onProcessEnded
+      }, async () => {
+        const bpmnProcessInstance = await processEngineClientApi.continueProcess(
+          processKey,
+          this,
+          userTaskEntity,
+          this.props.executionContext
+        );
+        if (done) {
+          done();
+        }
+        this.setState({
+          bpmnProcessInstance
+        });
       });
     }
   };
@@ -291,30 +330,37 @@ class ProcessDefinition extends Component {
 }
 
 const initialQuery = {
-  operator: 'and',
-  queries: [
-    {
-      attribute: 'id',
-      operator: '=',
-      value: '-1'
-    }
-  ]
+  attribute: 'id',
+  operator: '=',
+  value: '00000000-0000-0000-0000-000000000000'
+};
+
+const initialUserTaskQuery = {
+  attribute: 'id',
+  operator: '=',
+  value: '00000000-0000-0000-0000-000000000000'
 };
 
 const RelayedProcessDefinition = Relay.createContainer(ProcessDefinition, {
   initialVariables: {
-    id: '-1',
-    query: JSON.stringify(initialQuery)
+    id: '00000000-0000-0000-0000-000000000000',
+    query: JSON.stringify(initialQuery),
+    taskId: '00000000-0000-0000-0000-000000000000',
+    userTaskQuery: JSON.stringify(initialUserTaskQuery)
   },
 
   prepareVariables(options) {
-    const { id } = options;
+    const { id, taskId } = options;
 
     const queryObj = initialQuery;
-    queryObj.queries[0].value = id;
+    queryObj.value = id;
+
+    const userTaskQueryObj = initialUserTaskQuery;
+    userTaskQueryObj.value = taskId;
 
     return {
-      query: JSON.stringify(queryObj)
+      query: JSON.stringify(queryObj),
+      userTaskQuery: JSON.stringify(userTaskQueryObj),
     };
   },
 
@@ -328,6 +374,25 @@ const RelayedProcessDefinition = Relay.createContainer(ProcessDefinition, {
               name,
               key,
               xml
+            }
+          }
+        },
+        userTasks: UserTaskConnection(query: $userTaskQuery, find: $userTaskQuery) {
+          edges {
+            node {
+              id,
+              name,
+              processToken {
+                id,
+                data
+              },
+              nodeDef {
+                id,
+                extensions,
+                processDef {
+                  id
+                }
+              }
             }
           }
         }
