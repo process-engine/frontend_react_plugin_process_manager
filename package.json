@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://www.npmjs.com"
   },
-  "version": "2.0.3",
+  "version": "0.1.0",
   "description": "MUI based Prozess Manager",
   "license": "MIT",
   "main": "dist/index.js",
@@ -13,8 +13,8 @@
     "Simon Reymann <simon.reymann@quantusflow.com>"
   ],
   "dependencies": {
-    "@process-engine/frontend_mui": "^2.0.0",
-    "@process-engine/process_engine_client_processable_react": "^2.0.0",
+  "@process-engine/frontend_mui": "^0.1.0",
+  "@process-engine/process_engine_client_processable_react": "^0.1.0",
     "babel-runtime": "^6.23.0",
     "bpmn-js": "^0.20.7",
     "bpmn-js-properties-panel": "^0.14.0",
