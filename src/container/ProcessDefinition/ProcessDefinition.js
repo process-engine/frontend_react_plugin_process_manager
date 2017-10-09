@@ -122,13 +122,15 @@ class ProcessDefinition extends Component {
           const xml = this.state.currentProcess.xml;
           this.openDiagram(xml);
         }
-
-        if (this.state.currentUserTaskToExecute) {
-          // Load task, create ProcessInstance and render ProcessContainer with it
-          this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute);
-        }
       }
     }, 0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.currentUserTaskToExecute && !this.props.executionContext && nextProps.executionContext) {
+      // Load task, create ProcessInstance and render ProcessContainer with it
+      this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute, nextProps.executionContext);
+    }
   }
 
   renderProcessContainer(processInstance, uiName, uiConfig, uiData) {
@@ -199,7 +201,7 @@ class ProcessDefinition extends Component {
     }
   };
 
-  async handleStartTask(processKey, userTaskEntity, onProcessEnded, done) {
+  async handleStartTask(processKey, userTaskEntity, context, onProcessEnded, done) {
     if (this.props.route.injectables && this.props.route.injectables.processEngineClientApi) {
       const processEngineClientApi = this.props.route.injectables.processEngineClientApi;
       this.setState({
@@ -210,7 +212,7 @@ class ProcessDefinition extends Component {
           processKey,
           this,
           userTaskEntity,
-          this.props.executionContext
+          context
         );
         if (done) {
           done();

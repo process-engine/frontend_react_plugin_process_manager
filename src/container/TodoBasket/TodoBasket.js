@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Relay from 'react-relay';
-import DeleteIcon from 'material-ui/svg-icons/action/delete.js';
 import cn from 'classnames';
 
 import ProcessableCrudTable from '@process-engine-js/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
@@ -35,9 +34,19 @@ class TodoBasket extends Component {
 
   getBaseFilter() {
     return {
-      attribute: 'id',
-      operator: '!=',
-      value: null
+      operator: 'and',
+      queries: [
+        {
+          attribute: 'id',
+          operator: '!=',
+          value: null
+        },
+        {
+          attribute: 'state',
+          operator: '=',
+          value: 'wait'
+        }
+      ]
     };
   };
 
@@ -151,6 +160,11 @@ const RelayedTodoBasket = Relay.createContainer(TodoBasket, {
           attribute: 'id',
           operator: '=',
           value: null
+        },
+        {
+          attribute: 'state',
+          operator: '=',
+          value: 'wait'
         }
       ]
     }),
