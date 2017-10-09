@@ -1,5 +1,5 @@
 {
-  "name": "@process-engine-js/frontend_react_plugin_process_manager",
+  "name": "@process-engine/frontend_react_plugin_process_manager",
   "publishConfig": {
     "registry": "https://www.npmjs.com"
   },
@@ -13,8 +13,8 @@
     "Simon Reymann <simon.reymann@quantusflow.com>"
   ],
   "dependencies": {
-    "@process-engine-js/frontend_mui": "^2.0.0",
-    "@process-engine-js/process_engine_client_processable_react": "^2.0.0",
+    "@process-engine/frontend_mui": "^2.0.0",
+    "@process-engine/process_engine_client_processable_react": "^2.0.0",
     "babel-runtime": "^6.23.0",
     "bpmn-js": "^0.20.7",
     "bpmn-js-properties-panel": "^0.14.0",
