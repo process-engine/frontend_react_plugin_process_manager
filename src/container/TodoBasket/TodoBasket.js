@@ -74,7 +74,7 @@ class TodoBasket extends Component {
 
     const processableCrudTable = (
       <ProcessableCrudTable
-        title='Aufgaben'
+        title='offene Aufgaben'
 
         executionContext={this.props.executionContext}
         processEngineClientApi={(this.props.route.injectables ? this.props.route.injectables.processEngineClientApi : null)}
@@ -183,8 +183,11 @@ const RelayedTodoBasket = Relay.createContainer(TodoBasket, {
               name,
               nodeDef {
                 id,
+                key,
+                name,
                 processDef {
-                  id
+                  id,
+                  key
                 }
               }
             },

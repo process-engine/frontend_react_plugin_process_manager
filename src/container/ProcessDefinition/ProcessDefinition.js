@@ -82,7 +82,6 @@ class ProcessDefinition extends Component {
 
   componentDidMount() {
     const canvas = $('#js-canvas');
-
     setTimeout(() => {
       const bpmnModeler = new BpmnModeler({
         container: canvas,
@@ -121,6 +120,10 @@ class ProcessDefinition extends Component {
         if (this.state.currentProcess && this.state.currentProcess.xml) {
           const xml = this.state.currentProcess.xml;
           this.openDiagram(xml);
+        }
+
+        if (this.state.currentUserTaskToExecute && this.props.executionContext) {
+          this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute, this.props.executionContext);
         }
       }
     }, 0);
@@ -262,6 +265,7 @@ class ProcessDefinition extends Component {
   }
 
   render() {
+
     const styles = require('./ProcessDefinition.scss');
 
     const theme = applyTheme('ProcessDefinition');
@@ -390,9 +394,12 @@ const RelayedProcessDefinition = Relay.createContainer(ProcessDefinition, {
               },
               nodeDef {
                 id,
+                name,
+                key,
                 extensions,
                 processDef {
-                  id
+                  id,
+                  key
                 }
               }
             }
