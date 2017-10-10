@@ -2,6 +2,7 @@ import { colors, spacing, zIndex } from 'material-ui/styles';
 import { fade } from 'material-ui/utils/colorManipulator';
 import React from 'react';
 import CleanCheckbox from 'material-ui/svg-icons/action/done';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 const DemoTheme = {
   brand: {
@@ -129,6 +130,68 @@ theme.muiProps = {
           backgroundColor: 'rgba(255, 255, 255, 0.0)',
           top: '3px',
           left: '4px'
+        }
+      }
+    },
+    DropDown: {
+      default: {
+        iconButton: <ArrowDown
+          style={{
+            width: '14px',
+            height: '14px'
+          }}
+        />,
+        autoWidth: false,
+        style: {
+          width: '100%',
+          height: '30px',
+          fontSize: '12px'
+        },
+        listStyle: {
+          paddingTop: '0px',
+          paddingBottom: '0px'
+        },
+
+        labelStyle: {
+          padding: '0px 0px 0px 4px',
+          lineHeight: '30px',
+          fontSize: '16px',
+          textTransform: 'uppercase',
+          height: '30px',
+          top: '0px',
+          backgroundColor: 'rgb(224, 224, 224)',
+          opacity: '1'
+        },
+        underlineStyle: {
+          margin: '-1px 0px',
+          top: '30px',
+          height: '1px'
+        },
+        iconStyle: {
+          right: '-12px',
+          fill: theme.brand.primary,
+          top: '-12px',
+          padding: '14px',
+          border: '12px',
+          height: '56px',
+          width: '56px'
+        },
+        floatingLabelFocusStyle: {
+          color: 'rgb(0, 0, 0)',
+          left: '4px',
+          top: '4px',
+          display: 'block',
+          lineHeight: '22px',
+          backgroundColor: 'rgba(0, 0, 0, 0.0)'
+        },
+        floatingLabelShrinkStyle: {
+          color: 'rgb(0, 0, 0)',
+          left: '4px',
+          top: '4px',
+          lineHeight: '22px',
+          display: 'block',
+          backgroundColor: 'rgba(0, 0, 0, 0.0)',
+          transform: 'scale(0.75) translate(0vw, -28px)',
         }
       }
     }
@@ -271,13 +334,13 @@ theme.qflProps = {
       default: {
         style: {
           position: 'relative',
+          fontFamily: 'Open Sans Condensed Light',
           fontSize: 'inherit',
           bottom: '0px',
           width: '200px',
           paddingTop: '0px',
           display: 'inline-block',
           marginLeft: '8px',
-          marginRight: '8px',
           marginTop: '8px'
         },
         labelStyle: {
@@ -291,8 +354,7 @@ theme.qflProps = {
           right: '8px',
           top: '-18px',
           fontSize: '16px',
-          color: theme.brand.vorstartRed,
-          marginRight: '4px',
+          marginRight: '-4px',
           lineHeight: '16px',
         }
       },

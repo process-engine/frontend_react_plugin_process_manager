@@ -84,7 +84,88 @@ class ProcessDefinitions extends Component {
 
   listBasedButtonSchema = () => [];
 
-  filterMenuSchema = () => [];
+  filterMenuSchema = () => [
+    {
+      key: 'tags', name: 'Tags', currentValue: 'all', theme: applyTheme('TableHeader'), items: (() => {
+        const tags = [
+          { value: 'all', label: 'Alle' },
+          { value: 'latest', label: 'Latest' },
+          { value: 'drafts', label: 'Drafts' },
+          { value: 'archived', label: 'Archived' }
+        ];
+        return tags;
+      })()
+    }
+  ];
+
+  onFilterChange(key, newValue, choosenElement, element, fetcher) {
+    if (fetcher) {
+      let newQuery = {
+        attribute: 'id',
+        operator: '!=',
+        value: null
+      };
+
+      if (newValue === 'latest') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'latest',
+              operator: '=',
+              value: true
+            }
+          ]
+        };
+      } else if (newValue === 'drafts') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'draft',
+              operator: '=',
+              value: true
+            }
+          ]
+        };
+      } else if (newValue === 'archived') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'latest',
+              operator: '!=',
+              value: true
+            },
+            {
+              attribute: 'draft',
+              operator: '!=',
+              value: true
+            }
+          ]
+        };
+      }
+
+      fetcher({
+        query: JSON.stringify(newQuery)
+      });
+    }
+  }
 
   baseFilterMenuSchema = () => [];
 
@@ -119,6 +200,8 @@ class ProcessDefinitions extends Component {
         listBasedButtonSchema={this.listBasedButtonSchema()}
         filterMenuSchema={this.filterMenuSchema()}
         baseFilterMenuSchema={this.baseFilterMenuSchema()}
+
+        onFilterChange={(key, newValue, choosenElement, element, fetcher) => this.onFilterChange(key, newValue, choosenElement, element, fetcher)}
 
         listBasedButtonTheme={applyTheme('TableHeader')}
         itemBasedButtonTheme={applyTheme('TableHeader')}
