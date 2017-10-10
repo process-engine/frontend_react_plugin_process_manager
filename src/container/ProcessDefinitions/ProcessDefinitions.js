@@ -47,13 +47,25 @@ class ProcessDefinitions extends Component {
     }
   }
 
-  columnSchema = [
+  versionFormatter(cell, row) {
+    let result = 'latest';
+    if (!row.latest && !row.draft) {
+      result  = 'archived';
+    } else if (row.draft) {
+      result = 'draft';
+    }
+
+    return result + ' (' + (row.version ? row.version : 'x.x.x') + ')';
+  }
+
+  columnSchema = () => [
     { name: 'ID', thcProps: { hidden: true, dataField: 'id', isKey: true }, searchable: true },
     { name: 'Name', thcProps: { dataField: 'name', dataSort: true }, searchable: true },
-    { name: 'Key', thcProps: { dataField: 'key', dataSort: true }, searchable: true }
+    { name: 'Key', thcProps: { width: 200, dataField: 'key', dataSort: true }, searchable: true },
+    { name: 'Version', thcProps: { width: 150, dataField: 'version', dataSort: true, dataFormat: (cell, row) => this.versionFormatter(cell, row) } },
   ];
 
-  itemBasedButtonSchema = [
+  itemBasedButtonSchema = () => [
     {
       key: 'delete',
       name: 'Prozess löschen',
@@ -70,11 +82,11 @@ class ProcessDefinitions extends Component {
     }
   ];
 
-  listBasedButtonSchema = [];
+  listBasedButtonSchema = () => [];
 
-  filterMenuSchema = [];
+  filterMenuSchema = () => [];
 
-  baseFilterMenuSchema = [];
+  baseFilterMenuSchema = () => [];
 
   render() {
     const { children } = this.props;
@@ -102,11 +114,11 @@ class ProcessDefinitions extends Component {
         processWidgetTheme={applyTheme('ProcessManager')}
         processTheme={applyTheme('ProcessDefinitions')}
 
-        columnSchema={this.columnSchema}
-        itemBasedButtonSchema={this.itemBasedButtonSchema}
-        listBasedButtonSchema={this.listBasedButtonSchema}
-        filterMenuSchema={this.filterMenuSchema}
-        baseFilterMenuSchema={this.baseFilterMenuSchema}
+        columnSchema={this.columnSchema()}
+        itemBasedButtonSchema={this.itemBasedButtonSchema()}
+        listBasedButtonSchema={this.listBasedButtonSchema()}
+        filterMenuSchema={this.filterMenuSchema()}
+        baseFilterMenuSchema={this.baseFilterMenuSchema()}
 
         listBasedButtonTheme={applyTheme('TableHeader')}
         itemBasedButtonTheme={applyTheme('TableHeader')}
@@ -181,6 +193,9 @@ const RelayedProcessDefinitions = Relay.createContainer(ProcessDefinitions, {
               id,
               name,
               key,
+              latest,
+              draft,
+              version
               defId
             },
             cursor

@@ -371,7 +371,6 @@ theme.rbtProps = {
         containerStyle: {
           fontSize: '20px',
           display: 'block',
-          width: '100%',
           overflow: 'hidden',
           marginLeft: '8px',
           marginRight: '8px'
