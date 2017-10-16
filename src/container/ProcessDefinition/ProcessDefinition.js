@@ -8,8 +8,8 @@ import {applyTheme} from '../../theme/themeProvider';
 import reduxApi from '../../redux/rest_redux';
 const bpmnActions = reduxApi.actions;
 
-import RaisedButton from '@process-engine-js/frontend_mui/dist/commonjs/Buttons/RaisedButton/RaisedButton.js';
-import ProcessableContainer from '@process-engine-js/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
+import RaisedButton from '@process-engine/frontend_mui/dist/commonjs/Buttons/RaisedButton/RaisedButton.js';
+import ProcessableContainer from '@process-engine/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
 
 import $ from 'jquery';
 
