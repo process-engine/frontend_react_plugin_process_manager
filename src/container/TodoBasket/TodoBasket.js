@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Relay from 'react-relay';
 import cn from 'classnames';
 
-import ProcessableCrudTable from '@process-engine-js/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
+import ProcessableCrudTable from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
 import { applyTheme } from '../../theme/themeProvider';
 
 class TodoBasket extends Component {
