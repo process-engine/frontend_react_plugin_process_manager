@@ -8,18 +8,20 @@ import {applyTheme} from '../../theme/themeProvider';
 import reduxApi from '../../redux/rest_redux';
 const bpmnActions = reduxApi.actions;
 
-import RaisedButton from '@process-engine/frontend_mui/dist/commonjs/Buttons/RaisedButton/RaisedButton.js';
-import ProcessableContainer from '@process-engine/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
+import RaisedButton from '@quantusflow/frontend_mui/dist/commonjs/Buttons/RaisedButton/RaisedButton.js';
+import ProcessableContainer from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
 
 import $ from 'jquery';
 
 let BpmnModeler = null;
+let BpmnViewer = null;
 let propertiesPanelModule = null;
 let propertiesProviderModule = null;
 let camundaModdleDescriptor = null;
 
 if (!global.__SERVER__) {
   BpmnModeler = require('bpmn-js/lib/Modeler');
+  BpmnViewer = require('bpmn-js/lib/Viewer');
   propertiesPanelModule = require('bpmn-js-properties-panel');
   propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
   camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda');
@@ -39,7 +41,10 @@ class ProcessDefinition extends Component {
     catalog: PropTypes.object,
     relay: PropTypes.object,
     route: PropTypes.object,
-    containerClassName: PropTypes.string
+    params: PropTypes.object,
+    containerClassName: PropTypes.string,
+    onLoadNewTask: PropTypes.func,
+    onProcessFinished: PropTypes.func,
   };
 
   static contextTypes = {
@@ -56,63 +61,99 @@ class ProcessDefinition extends Component {
     return null;
   }
 
+  static getUserTask(props) {
+    if (props && props.catalog && props.catalog.userTasks && props.catalog.userTasks.edges &&
+      props.catalog.userTasks.edges.length === 1 && props.catalog.userTasks.edges[0] && props.catalog.userTasks.edges[0].node) {
+      return props.catalog.userTasks.edges[0].node;
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
 
+    const currentProcess = ProcessDefinition.getCurrentProcess(props);
+
     this.state = {
-      currentProcess: ProcessDefinition.getCurrentProcess(props),
+      currentProcess,
+      currentUserTaskToExecute: ProcessDefinition.getUserTask(props),
       currentBpmnProcessKey: null,
       bpmnOnProcessEnded: null,
       bpmnProcessInstance: null,
       bpmnProcessableContainer: null,
-      bpmnModeler: null
+      bpmnModeler: null,
+
+      isDraftMode: currentProcess.draft,
+      isLatest: currentProcess.latest,
     };
   };
 
   componentDidMount() {
     const canvas = $('#js-canvas');
-
     setTimeout(() => {
-      const bpmnModeler = new BpmnModeler({
-        container: canvas,
-        propertiesPanel: {
-          parent: '#js-properties-panel'
-        },
-        additionalModules: [
-          propertiesPanelModule,
-          propertiesProviderModule
-        ],
-        moddleExtensions: {
-          camunda: camundaModdleDescriptor
-        }
-      });
+      if (this.state.isDraftMode) {
+        const bpmnModeler = new BpmnModeler({
+          container: canvas,
+          propertiesPanel: {
+            parent: '#js-properties-panel'
+          },
+          additionalModules: [
+            propertiesPanelModule,
+            propertiesProviderModule
+          ],
+          moddleExtensions: {
+            camunda: camundaModdleDescriptor
+          }
+        });
 
-      this.EventBus = bpmnModeler.get('eventBus');
-      if (this.state.currentProcess && this.state.currentProcess.id) {
-        ((modeler) => {
-          this.EventBus.on('commandStack.changed', (event) => {
-            modeler.moddle.toXML(modeler.definitions, null, (err, result) => {
-              this.context.store.dispatch(bpmnActions.executeProcessDefMethod({
-                id: this.state.currentProcess.id,
-                method: 'updateBpmn'
-              }, {
-                body: JSON.stringify({
-                  xml: result
-                })
-              }, (updateBpmnErr) => {
-                if (updateBpmnErr) throw updateBpmnErr;
-              }));
+        this.EventBus = bpmnModeler.get('eventBus');
+        if (this.state.currentProcess && this.state.currentProcess.id) {
+          ((modeler) => {
+            this.EventBus.on('commandStack.changed', (event) => {
+              modeler.moddle.toXML(modeler.definitions, null, (err, result) => {
+                this.context.store.dispatch(bpmnActions.executeProcessDefMethod({
+                  id: this.state.currentProcess.id,
+                  method: 'updateBpmn'
+                }, {
+                  body: JSON.stringify({
+                    xml: result
+                  })
+                }, (updateBpmnErr) => {
+                  if (updateBpmnErr) throw updateBpmnErr;
+                }));
+              });
             });
-          });
-        })(bpmnModeler);
-        this.BpmnModeler = bpmnModeler;
+          })(bpmnModeler);
+          this.BpmnModeler = bpmnModeler;
 
+          if (this.state.currentProcess && this.state.currentProcess.xml) {
+            const xml = this.state.currentProcess.xml;
+            this.openDiagram(xml);
+          }
+        }
+      } else {
+        const bpmnViewer = new BpmnViewer({
+          container: canvas
+        });
+        this.BpmnViewer = bpmnViewer;
         if (this.state.currentProcess && this.state.currentProcess.xml) {
           const xml = this.state.currentProcess.xml;
           this.openDiagram(xml);
         }
       }
+
+      if (!this.state.isDraftMode && this.state.currentUserTaskToExecute && this.props.executionContext) {
+        this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute, this.props.executionContext, this.props.onProcessFinished);
+      }
     }, 0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.isDraftMode && this.state.currentUserTaskToExecute && !this.props.executionContext && nextProps.executionContext) {
+      // Load task, create ProcessInstance and render ProcessContainer with it
+      this.handleStartTask(this.state.currentProcess.key, this.state.currentUserTaskToExecute, nextProps.executionContext, this.props.onProcessFinished);
+    }
   }
 
   renderProcessContainer(processInstance, uiName, uiConfig, uiData) {
@@ -149,11 +190,11 @@ class ProcessDefinition extends Component {
         this.setState(
           {
             bpmnProcessableContainer: null,
-            bpmnProcessInstance: null
+            bpmnProcessInstance: null,
           },
           () => {
             if (this.state.bpmnOnProcessEnded) {
-              this.state.bpmnOnProcessEnded();
+              this.state.bpmnOnProcessEnded(this.state.currentUserTaskToExecute);
             }
           }
         );
@@ -179,6 +220,43 @@ class ProcessDefinition extends Component {
             .removeClass('with-error')
             .addClass('with-diagram');
         }
+      });
+    } else if (this.BpmnViewer) {
+      this.BpmnViewer.importXML(xml, function(err) {
+        if (err) {
+          $('#js-drop-zone')
+            .removeClass('with-diagram')
+            .addClass('with-error');
+
+          $('#js-drop-zone').find('.error pre').text(err.message);
+        } else {
+          $('#js-drop-zone')
+            .removeClass('with-error')
+            .addClass('with-diagram');
+        }
+      });
+    }
+  };
+
+  async handleStartTask(processKey, userTaskEntity, context, onProcessEnded, done) {
+    if (this.props.route.injectables && this.props.route.injectables.processEngineClientApi) {
+      const processEngineClientApi = this.props.route.injectables.processEngineClientApi;
+      this.setState({
+        currentBpmnProcessKey: processKey,
+        bpmnOnProcessEnded: onProcessEnded
+      }, async () => {
+        const bpmnProcessInstance = await processEngineClientApi.continueProcess(
+          processKey,
+          this,
+          userTaskEntity,
+          context
+        );
+        if (done) {
+          done();
+        }
+        this.setState({
+          bpmnProcessInstance
+        });
       });
     }
   };
@@ -220,7 +298,60 @@ class ProcessDefinition extends Component {
     });
   }
 
+  handleEditDraft() {
+    this.context.store.dispatch(bpmnActions.executeProcessDefMethod({
+      id: this.state.currentProcess.id,
+      method: 'getDraft'
+    }, {
+      body: null
+    }, (getDraftErr, data) => {
+      if (getDraftErr) throw getDraftErr;
+
+      if (this.props.onLoadNewTask) {
+        this.props.onLoadNewTask(data.id);
+      }
+    }));
+  }
+
+  handleCancelEditDraft() {
+    this.context.store.dispatch(bpmnActions.executeProcessDefMethod({
+      id: this.state.currentProcess.id,
+      method: 'getLatest'
+    }, {
+      body: null
+    }, (getDraftErr, data) => {
+      if (getDraftErr) throw getDraftErr;
+
+      if (this.props.onLoadNewTask) {
+        this.props.onLoadNewTask(data.id);
+      }
+    }));
+  }
+
+  handlePublishDraft() {
+    this.context.store.dispatch(bpmnActions.executeProcessDefMethod({
+      id: this.state.currentProcess.id,
+      method: 'publishDraft'
+    }, {
+      body: null
+    }, (getDraftErr, data) => {
+      if (getDraftErr) throw getDraftErr;
+
+      this.props.relay.forceFetch({}, (e) => {
+        if (e.mounted && e.done) {
+          const currentProcess = ProcessDefinition.getCurrentProcess(this.props);
+          this.setState({
+            currentProcess,
+            isDraftMode: currentProcess.draft,
+            isLatest: currentProcess.latest,
+          });
+        }
+      });
+    }));
+  }
+
   render() {
+
     const styles = require('./ProcessDefinition.scss');
 
     const theme = applyTheme('ProcessDefinition');
@@ -239,19 +370,16 @@ class ProcessDefinition extends Component {
       </div>
     );
 
-    return (
-      <div  className={cn(this.props.containerClassName, styles.processDefinitionContainer)}>
-        <h3>{this.state.currentProcess.name}</h3>
+    let executionControlPanel = (
+      <div>
         <RaisedButton
           theme={theme}
           muiProps={{
             label: 'Start',
             primary: true,
-            disabled: (!this.state.currentProcess || this.state.bpmnProcessInstance)
-          }}
-          qflProps={{
+            disabled: (!this.state.isLatest && !this.state.currentUserTaskToExecute) || this.state.isDraftMode || (!this.state.currentProcess || this.state.bpmnProcessInstance),
             onClick: (e) => {
-              this.handleStart(this.state.currentProcess.key);
+              this.handleStart(this.state.currentProcess.key, null, this.props.onProcessFinished);
             }
           }}
         />
@@ -260,9 +388,7 @@ class ProcessDefinition extends Component {
           muiProps={{
             label: 'Stop',
             primary: true,
-            disabled: (!this.state.currentProcess || !this.state.bpmnProcessInstance)
-          }}
-          qflProps={{
+            disabled: (!this.state.isLatest && !this.state.currentUserTaskToExecute) || this.state.isDraftMode || (!this.state.currentProcess || !this.state.bpmnProcessInstance),
             onClick: (e) => {
               this.handleStop();
             }
@@ -274,47 +400,98 @@ class ProcessDefinition extends Component {
             label: 'Restart',
             primary: false,
             secondary: true,
-            disabled: (!this.state.currentProcess || !this.state.bpmnProcessInstance)
-          }}
-          qflProps={{
+            disabled: (!this.state.isLatest && !this.state.currentUserTaskToExecute) || this.state.isDraftMode || (!this.state.currentProcess || !this.state.bpmnProcessInstance),
             onClick: (e) => {
-              this.handleRestart(this.state.currentProcess.key);
+              this.handleRestart(this.state.currentProcess.key, null, this.props.onProcessFinished);
             }
           }}
         />
         <hr />
+      </div>
+    );
+
+    let editControlPanel = null;
+    if (!this.state.currentUserTaskToExecute) {
+      editControlPanel = (
+        <div>
+          <RaisedButton
+            theme={theme}
+            muiProps={{
+              label: (this.state.isDraftMode ? 'Abbrechen' : 'Bearbeiten'),
+              primary: true,
+              disabled: !this.state.isLatest && !this.state.isDraftMode,
+              onClick: (e) => {
+                if (!this.state.isDraftMode) {
+                  this.handleEditDraft();
+                } else {
+                  this.handleCancelEditDraft();
+                }
+              }
+            }}
+          />
+          <RaisedButton
+            theme={theme}
+            muiProps={{
+              label: 'Veröffentlichen',
+              primary: true,
+              disabled: !this.state.isDraftMode,
+              onClick: (e) => {
+                this.handlePublishDraft();
+              }
+            }}
+          />
+          <hr />
+        </div>
+      );
+    }
+
+    const mode = (this.state.currentProcess.draft ? 'DRAFT' : (this.state.currentProcess.latest ? 'LATEST' : 'ARCHIVED'));
+
+    return (
+      <div  className={cn(this.props.containerClassName, styles.processDefinitionContainer)}>
+        {editControlPanel}
+        <h3>{this.state.currentProcess.name} ({mode})</h3>
+        {executionControlPanel}
         {bpmnProcessContainer}
         {processModelContainer}
+
       </div>
     );
   };
 }
 
 const initialQuery = {
-  operator: 'and',
-  queries: [
-    {
-      attribute: 'id',
-      operator: '=',
-      value: '-1'
-    }
-  ]
+  attribute: 'id',
+  operator: '=',
+  value: '00000000-0000-0000-0000-000000000000'
+};
+
+const initialUserTaskQuery = {
+  attribute: 'id',
+  operator: '=',
+  value: '00000000-0000-0000-0000-000000000000'
 };
 
 const RelayedProcessDefinition = Relay.createContainer(ProcessDefinition, {
   initialVariables: {
-    id: '-1',
-    query: JSON.stringify(initialQuery)
+    id: '00000000-0000-0000-0000-000000000000',
+    query: JSON.stringify(initialQuery),
+    taskId: '00000000-0000-0000-0000-000000000000',
+    userTaskQuery: JSON.stringify(initialUserTaskQuery)
   },
 
   prepareVariables(options) {
-    const { id } = options;
+    const { id, taskId } = options;
 
     const queryObj = initialQuery;
-    queryObj.queries[0].value = id;
+    queryObj.value = id;
+
+    const userTaskQueryObj = initialUserTaskQuery;
+    userTaskQueryObj.value = taskId;
 
     return {
-      query: JSON.stringify(queryObj)
+      query: JSON.stringify(queryObj),
+      userTaskQuery: JSON.stringify(userTaskQueryObj),
     };
   },
 
@@ -327,7 +504,35 @@ const RelayedProcessDefinition = Relay.createContainer(ProcessDefinition, {
               id,
               name,
               key,
-              xml
+              xml,
+              draft,
+              latest,
+              version
+            }
+          }
+        },
+        userTasks: UserTaskConnection(query: $userTaskQuery, find: $userTaskQuery) {
+          edges {
+            node {
+              id,
+              name,
+              processToken {
+                id,
+                data
+              },
+              nodeDef {
+                id,
+                name,
+                key,
+                extensions,
+                processDef {
+                  id,
+                  key,
+                  draft,
+                  latest,
+                  version
+                }
+              }
             }
           }
         }

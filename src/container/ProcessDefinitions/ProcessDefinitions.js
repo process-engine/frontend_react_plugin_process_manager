@@ -3,7 +3,7 @@ import Relay from 'react-relay';
 import DeleteIcon from 'material-ui/svg-icons/action/delete.js';
 import cn from 'classnames';
 
-import ProcessableCrudTable from '@process-engine/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
+import ProcessableCrudTable from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
 import { applyTheme } from '../../theme/themeProvider';
 
 class ProcessDefinitions extends Component {
@@ -47,13 +47,25 @@ class ProcessDefinitions extends Component {
     }
   }
 
-  columnSchema = [
+  versionFormatter(cell, row) {
+    let result = 'latest';
+    if (!row.latest && !row.draft) {
+      result  = 'archived';
+    } else if (row.draft) {
+      result = 'draft';
+    }
+
+    return result + ' (' + (row.version ? row.version : 'x.x.x') + ')';
+  }
+
+  columnSchema = () => [
     { name: 'ID', thcProps: { hidden: true, dataField: 'id', isKey: true }, searchable: true },
     { name: 'Name', thcProps: { dataField: 'name', dataSort: true }, searchable: true },
-    { name: 'Key', thcProps: { dataField: 'key', dataSort: true }, searchable: true }
+    { name: 'Key', thcProps: { width: 200, dataField: 'key', dataSort: true }, searchable: true },
+    { name: 'Version', thcProps: { width: 150, dataField: 'version', dataSort: true, dataFormat: (cell, row) => this.versionFormatter(cell, row) } },
   ];
 
-  itemBasedButtonSchema = [
+  itemBasedButtonSchema = () => [
     {
       key: 'delete',
       name: 'Prozess löschen',
@@ -70,11 +82,92 @@ class ProcessDefinitions extends Component {
     }
   ];
 
-  listBasedButtonSchema = [];
+  listBasedButtonSchema = () => [];
 
-  filterMenuSchema = [];
+  filterMenuSchema = () => [
+    {
+      key: 'tags', name: 'Tags', currentValue: 'all', theme: applyTheme('TableHeader'), items: (() => {
+        const tags = [
+          { value: 'all', label: 'Alle' },
+          { value: 'latest', label: 'Latest' },
+          { value: 'drafts', label: 'Drafts' },
+          { value: 'archived', label: 'Archived' }
+        ];
+        return tags;
+      })()
+    }
+  ];
 
-  baseFilterMenuSchema = [];
+  onFilterChange(key, newValue, choosenElement, element, fetcher) {
+    if (fetcher) {
+      let newQuery = {
+        attribute: 'id',
+        operator: '!=',
+        value: null
+      };
+
+      if (newValue === 'latest') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'latest',
+              operator: '=',
+              value: true
+            }
+          ]
+        };
+      } else if (newValue === 'drafts') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'draft',
+              operator: '=',
+              value: true
+            }
+          ]
+        };
+      } else if (newValue === 'archived') {
+        newQuery = {
+          operator: 'and',
+          queries: [
+            {
+              attribute: 'id',
+              operator: '!=',
+              value: null
+            },
+            {
+              attribute: 'latest',
+              operator: '!=',
+              value: true
+            },
+            {
+              attribute: 'draft',
+              operator: '!=',
+              value: true
+            }
+          ]
+        };
+      }
+
+      fetcher({
+        query: JSON.stringify(newQuery)
+      });
+    }
+  }
+
+  baseFilterMenuSchema = () => [];
 
   render() {
     const { children } = this.props;
@@ -93,18 +186,22 @@ class ProcessDefinitions extends Component {
 
         onRowDoubleClick={(row) => this.handleRowDoubleClick(row)}
 
-        createButtonTheme={applyTheme('CreateProcessDefinition')}
-        createDialogTheme={applyTheme('CreateProcessDefinition')}
-        createFormItemTheme={applyTheme('ProcessDefinitionFormItem')}
-        createConfirmTheme={applyTheme('ProcessDefinitionConfirmItem')}
-        createWidgetTheme={applyTheme('CreateProcessDefinition')}
-        createTheme={applyTheme('ProcessDefinitions')}
+        createButtonTheme={applyTheme('TableHeader')}
 
-        columnSchema={this.columnSchema}
-        itemBasedButtonSchema={this.itemBasedButtonSchema}
-        listBasedButtonSchema={this.listBasedButtonSchema}
-        filterMenuSchema={this.filterMenuSchema}
-        baseFilterMenuSchema={this.baseFilterMenuSchema}
+        processButtonTheme={applyTheme('ProcessManager')}
+        processDialogTheme={applyTheme('ProcessManager')}
+        processFormItemTheme={applyTheme('ProcessDefinitionFormItem')}
+        processConfirmTheme={applyTheme('ProcessDefinitionConfirmItem')}
+        processWidgetTheme={applyTheme('ProcessManager')}
+        processTheme={applyTheme('ProcessDefinitions')}
+
+        columnSchema={this.columnSchema()}
+        itemBasedButtonSchema={this.itemBasedButtonSchema()}
+        listBasedButtonSchema={this.listBasedButtonSchema()}
+        filterMenuSchema={this.filterMenuSchema()}
+        baseFilterMenuSchema={this.baseFilterMenuSchema()}
+
+        onFilterChange={(key, newValue, choosenElement, element, fetcher) => this.onFilterChange(key, newValue, choosenElement, element, fetcher)}
 
         listBasedButtonTheme={applyTheme('TableHeader')}
         itemBasedButtonTheme={applyTheme('TableHeader')}
@@ -116,11 +213,16 @@ class ProcessDefinitions extends Component {
 
         searchFieldTheme={applyTheme('TableHeader')}
 
-        theme={applyTheme()}
+        theme={applyTheme('ProcessableCrudTable')}
+
         tableTheme={applyTheme('Table')}
+        tableOverlayTheme={applyTheme('TableOverlay')}
         tableSelectorTheme={applyTheme('TableSelector')}
 
         tableStyles={{
+          headerContainerClassName: ProcessDefinitions.styles.headerContainer,
+          itemBasedElementsClassName: ProcessDefinitions.styles.itemBasedElements,
+          filterMenuElementsClassName: ProcessDefinitions.styles.filterMenuElements,
           tableWithFrameClassName: ProcessDefinitions.styles.gridListBox,
           tableWithoutFrameClassName: ProcessDefinitions.styles.gridListBoxNoFrame,
           createButtonClassName: ProcessDefinitions.styles.createButton,
@@ -174,6 +276,9 @@ const RelayedProcessDefinitions = Relay.createContainer(ProcessDefinitions, {
               id,
               name,
               key,
+              latest,
+              draft,
+              version
               defId
             },
             cursor
