@@ -3,7 +3,7 @@ import Relay from 'react-relay';
 import DeleteIcon from 'material-ui/svg-icons/action/delete.js';
 import cn from 'classnames';
 
-import ProcessableCrudTable from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
+import { ProcessableCrudTable } from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/CrudTable/CrudTable.js';
 import { applyTheme } from '../../theme/themeProvider';
 
 class ProcessDefinitions extends Component {
@@ -186,7 +186,7 @@ class ProcessDefinitions extends Component {
 
         onRowDoubleClick={(row) => this.handleRowDoubleClick(row)}
 
-        createButtonTheme={applyTheme('TableHeader')}
+        createButtonTheme={applyTheme('TableHeader:create')}
 
         processButtonTheme={applyTheme('ProcessManager')}
         processDialogTheme={applyTheme('ProcessManager')}

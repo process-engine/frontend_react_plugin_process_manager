@@ -9,7 +9,7 @@ import reduxApi from '../../redux/rest_redux';
 const bpmnActions = reduxApi.actions;
 
 import RaisedButton from '@quantusflow/frontend_mui/dist/commonjs/Buttons/RaisedButton/RaisedButton.js';
-import ProcessableContainer from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
+import { ProcessableContainer } from '@quantusflow/process_engine_client_processable_react/dist/commonjs/Processable/ProcessableContainer.js';
 
 import $ from 'jquery';
 

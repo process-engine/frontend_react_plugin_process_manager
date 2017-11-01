@@ -90,6 +90,9 @@ theme.muiProps = {
           fontSize: theme.sizes.primary,
           color: 'white'
         }
+      },
+      create: {
+        label: '+'
       }
     },
     TextField: {
