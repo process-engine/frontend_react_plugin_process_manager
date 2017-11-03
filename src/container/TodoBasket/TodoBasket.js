@@ -86,7 +86,7 @@ class TodoBasket extends Component {
 
         onRowDoubleClick={(row) => this.handleRowDoubleClick(row)}
 
-        createButtonTheme={applyTheme('TableHeader')}
+        createButton={false}
 
         processButtonTheme={applyTheme('ProcessManager')}
         processDialogTheme={applyTheme('ProcessManager')}
