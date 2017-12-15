@@ -174,12 +174,17 @@ class ProcessDefinitions extends Component {
 
     const processableCrudTable = (
       <ProcessableCrudTable
+        ref={`processableCrudTable_ProcessDefinition`}
+        tableKey={'ProcessDefinition'}
+
         title='Prozesse'
 
         executionContext={this.props.executionContext}
         processEngineClientApi={(this.props.route.injectables ? this.props.route.injectables.processEngineClientApi : null)}
 
         entityTypeName={"ProcessDef"}
+        entityTypesName={"ProcessDefs"}
+
         fetcher={(partialVariables, onReadyStateChange) => this.props.relay.forceFetch(partialVariables, onReadyStateChange)}
         baseFilter={this.getBaseFilter}
         entityCollection={this.props.catalog.processDefinitions}

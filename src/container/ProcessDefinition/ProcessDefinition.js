@@ -203,6 +203,17 @@ class ProcessDefinition extends Component {
     }
   };
 
+  async handleCancel(processInstance) {
+    switch (processInstance.processKey) {
+      case (this.state.currentBpmnProcessKey):
+        this.setState({
+          bpmnProcessableContainer: null,
+        });
+        break;
+      default:
+    }
+  };
+
   BpmnModeler = null;
   EventBus = null;
 
